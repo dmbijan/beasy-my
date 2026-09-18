@@ -17,10 +17,19 @@ export const metadata: Metadata = {
 }
 
 const features = [
-  { icon: Sparkles, title: "88+ Template Cantik", desc: "Template melayu islamic, modern, klasik dan tradisional" },
+  { icon: Sparkles, title: "114+ Template Kahwin", desc: "Motion, Floral, Khat Islamik, Luxury, Simple & Traditional" },
   { icon: Camera, title: "Galeri Foto & Video", desc: "Upload dan kongsi momen istimewa anda" },
   { icon: Mic2, title: "Audio Guestbook", desc: "Ucapan dan doa dari tetamu dalam bentuk audio" },
   { icon: CalendarCheck, title: "RSVP Online", desc: "Pengurusan tetamu yang mudah dan efisien" },
+]
+
+const weddingCategories = [
+  { name: "Motion", desc: "Gradient bercahaya & dinamik", gradient: "from-rose-500 via-purple-500 to-indigo-500" },
+  { name: "Floral", desc: "Palet bunga romantik", gradient: "from-pink-400 to-rose-500" },
+  { name: "Khat", desc: "Seni khat Islamik & emas", gradient: "from-amber-500 to-yellow-600" },
+  { name: "Luxury", desc: "Premium emas & navy", gradient: "from-slate-900 to-amber-600" },
+  { name: "Simple", desc: "Minimal & bersih", gradient: "from-white to-slate-200" },
+  { name: "Traditional", desc: "Songket & batik Melayu", gradient: "from-red-700 to-rose-600" },
 ]
 
 const benefits = [
@@ -47,6 +56,34 @@ export default function WeddingLanding() {
         <Link href="/e/demo-perkahwinan-aiman-sarah" className="inline-flex items-center gap-2 bg-gradient-to-r from-rose-500 to-pink-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-lg transition-all">
           Lihat Demo <ArrowRight className="w-5 h-5" />
         </Link>
+      </section>
+
+      {/* Template Categories */}
+      <section className="container mx-auto px-4 py-16">
+        <h2 className="text-3xl font-bold text-center mb-4">114+ Template Kahwin Digital</h2>
+        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          6 kategori eksklusif untuk majlis perkahwinan — daripada khat Islamik, bunga romantik, hingga songket tradisional.
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+          {weddingCategories.map((cat, i) => (
+            <Link key={i} href="/templates" className="block group">
+              <div className="rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all">
+                <div className={`h-20 bg-gradient-to-br ${cat.gradient} flex items-center justify-center`}>
+                  <span className="text-white font-bold drop-shadow">You're Invited</span>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-semibold text-gray-800 group-hover:text-rose-600 transition">{cat.name}</h3>
+                  <p className="text-sm text-gray-500">{cat.desc}</p>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <div className="text-center mt-8">
+          <Link href="/templates" className="inline-flex items-center gap-2 text-rose-600 font-semibold hover:text-rose-700 transition">
+            Lihat Semua Template <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
       </section>
 
       {/* Features Grid */}

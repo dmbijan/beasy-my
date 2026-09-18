@@ -13,6 +13,8 @@ import WishForm from "@/components/widgets/WishForm"
 import AudioGuestbook from "@/components/widgets/AudioGuestbook"
 import VideoGuestbook from "@/components/widgets/VideoGuestbook"
 import { MapPin, Calendar, Utensils, Camera, Heart, QrCode, CreditCard, Sparkles, HomeIcon, Heart as HeartIcon, Download, Music, Navigation, Video } from "lucide-react"
+import { themePageGradient, accentWithAlpha } from "@/lib/theme-styles"
+import { MotifOverlay } from "@/components/ui/TemplateMotif"
 
 export default function EventPortalPage() {
   const params = useParams()
@@ -72,11 +74,12 @@ export default function EventPortalPage() {
   }
 
   return (
-    <div className="min-h-screen mesh-gradient pb-32">
-      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="relative px-4 pt-8 pb-6">
+    <div className="min-h-screen pb-32 relative overflow-hidden" style={{ background: themePageGradient('elegant') }}>
+      <MotifOverlay kind="khat" accent="#ca8a04" />
+      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 px-4 pt-8 pb-6">
         <GlassCard variant="light" className="mb-6">
           <div className="text-center">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/20 border border-rose-500/30 text-xs font-medium text-rose-300 mb-3">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium mb-3" style={{ backgroundColor: 'rgba(212,175,55,0.2)', border: '1px solid rgba(212,175,55,0.35)', color: '#d4af37' }}>
               <HeartIcon className="w-3 h-3" /> Wedding
             </span>
             <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">{eventData.title}</h1>
@@ -102,7 +105,7 @@ export default function EventPortalPage() {
         )}
       </motion.div>
 
-      <div className="px-4 space-y-6">
+      <div className="relative z-10 px-4 space-y-6">
         <AnimatePresence mode="wait">
           {activeModule === "home" && (
             <motion.div key="home" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">

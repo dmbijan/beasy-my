@@ -197,6 +197,19 @@ export default function EventPortalPage() {
               {(eventData.eventType || 'other').charAt(0).toUpperCase() + (eventData.eventType || 'other').slice(1)}
             </span>
 
+            {/* Template name (derived from accent colour) */}
+            {(() => {
+              const tpl = templateByAccentColor(eventData.accentColor)
+              if (!tpl) return null
+              return (
+                <div className="text-xs text-white/40 mb-2 tracking-wide">
+                  Template: <span className="text-white/70 font-medium">{tpl.name}</span>
+                  <span className="mx-1.5 text-white/25">•</span>
+                  <span className="text-white/50">{tpl.category}</span>
+                </div>
+              )
+            })()}
+
             {/* Couple identity (Galeri Kawen-style) */}
             {eventData.customization?.monogram && (
               <div
