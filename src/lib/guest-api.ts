@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
+import { isPremiumModule, isPremiumHost } from '@/lib/premium'
 
 export const eventIdSchema = z.string().uuid('Event ID mesti UUID yang sah')
 export const guestNameSchema = z.string().trim().min(2).max(255)
@@ -36,6 +37,10 @@ export async function requireGuestEvent(eventId: string, moduleType: string, enf
     .select('is_enabled').eq('event_id', eventId).eq('module_type', moduleType)
   if (moduleError) throw new GuestAPIError(500, 'Gagal menyemak modul')
   if (!modules?.some(module => module.is_enabled === true)) throw new GuestAPIError(403, 'Modul ini tidak diaktifkan')
+  // Premium modules require an active premium host.
+  if (isPremiumModule(moduleType) && !(await isPremiumHost(event.host_id))) {
+    throw new GuestAPIError(403, 'Modul ini memerlukan pelan Premium')
+  }
   if (enforceDeadline && event.rsvp_deadline) {
     const deadline = Date.parse(event.rsvp_deadline)
     if (!Number.isFinite(deadline) || Date.now() >= deadline) throw new GuestAPIError(403, 'Tarikh akhir RSVP telah tamat')

@@ -44,7 +44,11 @@ test('public model maps location and safely defaults missing modules', () => {
   assert.equal(model.angpao.accountNumber, '')
 })
 const next = { NextResponse: { json: (body, init = {}) => ({ body, status: init.status || 200 }) } }
-const guest = load('src/lib/guest-api.ts', { 'next/server': next, '@/lib/supabase': {} })
+const guest = load('src/lib/guest-api.ts', {
+  'next/server': next,
+  '@/lib/supabase': {},
+  '@/lib/premium': { isPremiumModule: () => false, isPremiumHost: async () => true },
+})
 test('guest RSVP requires explicit consent and UUID; rejects fractional pax', () => {
   const input = { eventId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', guestName: 'Tetamu', phoneNumber: '0123456789', pax: 1, privacyConsent: true }
   assert.equal(guest.rsvpSchema.safeParse(input).success, true)

@@ -24,9 +24,17 @@ export async function GET(req: NextRequest) {
       const stored = Buffer.from(claim_token_hash, 'hex')
       canClaim = stored.length === supplied.length && timingSafeEqual(stored, supplied)
     }
+    // Determine host premium status (for gating premium modules in the portal).
+    let isPremium = false
+    if (host_id) {
+      const { data: profile } = await supabaseAdmin.from('profiles')
+        .select('is_premium, premium_expires_at').eq('id', host_id).maybeSingle()
+      isPremium = profile?.is_premium === true &&
+        (profile.premium_expires_at == null || Date.parse(profile.premium_expires_at) > Date.now())
+    }
     return NextResponse.json({ event: {
       ...publicEvent, event_modules: event.event_modules.filter(module => module.is_enabled),
-      isOwner: !!session?.user?.id && session.user.id === host_id, canClaim,
+      isOwner: !!session?.user?.id && session.user.id === host_id, canClaim, isPremium,
     } }, { headers: { 'Cache-Control': 'private, no-store' } })
   } catch {
     return NextResponse.json({ error: 'Gagal memuatkan acara' }, { status: 500 })
