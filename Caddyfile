@@ -1,0 +1,41 @@
+# ============================================
+# Beasy.my - Caddy Configuration
+# Auto HTTPS dengan Let's Encrypt
+# ============================================
+
+beasy.my, www.beasy.my {
+    # Reverse proxy ke Docker container
+    reverse_proxy localhost:3000
+
+    # Headers
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+    }
+
+    # Gzip compression
+    encode gzip
+
+    # Static file caching
+    @static {
+        path *.css *.js *.png *.jpg *.jpeg *.gif *.ico *.woff *.woff2
+    }
+    cache_control @static {
+        max-age = 604800
+    }
+
+    # Logging
+    log {
+        output file /var/log/caddy/beasy.log {
+            roll_keep 7
+            roll_keep_for 7d
+        }
+    }
+
+    # Error pages
+    handle_errors {
+        rewrite * /{err.status_code}
+        file_server /usr/share/caddy/errors
+    }
+}

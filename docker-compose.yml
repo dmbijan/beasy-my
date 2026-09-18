@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+        SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+        GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+        NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+        TOYYIBPAY_SECRET_KEY: ${TOYYIBPAY_SECRET_KEY}
+        TOYYIBPAY_CATEGORY_CODE: ${TOYYIBPAY_CATEGORY_CODE}
+    container_name: beasy-my
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.docker
+    environment:
+      - NEXT_PUBLIC_URL=http://localhost:3000
+      - NODE_ENV=production
+    networks:
+      - beasy-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  beasy-network:
+    driver: bridge

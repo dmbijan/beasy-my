@@ -1,0 +1,75 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+.env
+.env.docker
+.env.railway
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# supabase
+/supabase/migrations
+supabase/.temp/
+
+# OS
+Thumbs.db
+
+# EXCLUDE LARGE FILES - Keep repo small for fast push
+# Docker installer (use Docker Desktop instead)
+Docker Desktop Installer.exe
+
+# Service account credentials (keep local only, never commit)
+client_secret_*.json
+
+# Database password file (if exists)
+*.sql.bak
+*.db
+
+# Large binary files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Logs
+*.log
+logs/
+
+# Cache
+.cache/
+.nyc_output/

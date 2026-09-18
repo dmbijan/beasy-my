@@ -1,0 +1,17 @@
+{
+  "name": "Beasy.my — Digital Event Platform",
+  "short_name": "Beasy",
+  "description": "Platform acara digital Malaysia — jemputan online, galeri foto, video, audio, RSVP dan banyak lagi.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icons/icon.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "categories": ["lifestyle", "entertainment", "business"],
+  "id": "@beasy.my",
+  "scope": "/",
+  "lang": "ms_MY"
+}
