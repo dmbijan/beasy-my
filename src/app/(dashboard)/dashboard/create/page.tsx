@@ -345,6 +345,9 @@ export default function CreateEventPage() {
                             <li>💬 Wishes & Ucapan guestbook</li>
                             <li>📸 Photo Upload & Gallery</li>
                             <li>🎙️ Audio Guestbook</li>
+                            <li>🎬 Video Guestbook</li>
+                            <li>🎵 Song Request</li>
+                            <li>📺 Live Wall (paparan dewan)</li>
                             <li>🧧 Digital Angpao / Sumbangan</li>
                             <li>☁️ Auto-save ke Google Drive</li>
                           </ul>
@@ -1066,7 +1069,9 @@ export default function CreateEventPage() {
                           <ul className="text-xs text-amber-200/70 space-y-1">
                             <li>• Location & Maps</li>
                             <li>• Wishes & Photo Upload</li>
-                            <li>• Audio Guestbook</li>
+                            <li>• Audio & Video Guestbook</li>
+                            <li>• Song Request</li>
+                            <li>• Live Wall (paparan dewan)</li>
                             <li>• Digital Angpao</li>
                             <li>• Google Drive Backup</li>
                           </ul>
