@@ -49,17 +49,27 @@ export default function ChatAI({ event }: ChatAIProps) {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight
   }, [messages, typing, open])
 
-  const send = (text?: string) => {
+  const send = async (text?: string) => {
     const value = (text ?? input).trim()
     if (!value) return
     const guestMsg: Message = { role: 'guest', text: value }
     setMessages(prev => [...prev, guestMsg])
     setInput('')
     setTyping(true)
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: value, event: { title: event.title, eventDate: event.eventDate.toISOString(), venueName: event.venueName, venueAddress: event.venueAddress, dressCode: event.dressCode, description: event.description } }),
+      })
+      const data = await response.json()
+      const reply = data?.reply || buildAnswer(value, event)
+      setMessages(prev => [...prev, { role: 'ai', text: reply }])
+    } catch {
       setMessages(prev => [...prev, { role: 'ai', text: buildAnswer(value, event) }])
+    } finally {
       setTyping(false)
-    }, 500)
+    }
   }
 
   return (

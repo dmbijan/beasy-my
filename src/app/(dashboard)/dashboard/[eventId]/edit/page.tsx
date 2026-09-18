@@ -9,6 +9,7 @@ import PrintableQR from '@/components/widgets/PrintableQR'
 import MediaModeration from '@/components/widgets/MediaModeration'
 import GalleryCustomization from '@/components/widgets/GalleryCustomization'
 import WeddingFeaturesWidget from '@/components/widgets/WeddingFeaturesWidget'
+import WeddingChecklistWidget from '@/components/widgets/WeddingChecklistWidget'
 import { Monitor } from 'lucide-react'
 
 interface EditableEvent { slug: string; title: string; event_date: string; venue_name: string; venue_address: string; description: string; is_active: boolean }
@@ -72,6 +73,7 @@ export default function EditEventPage() {
       <MediaModeration eventId={eventId} />
       <GalleryCustomization eventId={eventId} />
       <WeddingFeaturesWidget eventId={eventId} />
+      <WeddingChecklistWidget eventId={eventId} />
       <GoogleDrivePaywall eventId={eventId} />
     </>}
   </main>

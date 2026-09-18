@@ -107,6 +107,7 @@ export interface GalleryCustomization {
   itinerary: ItineraryItem[]
   chatAiEnabled: boolean
   pdfEnabled: boolean
+  checklistDone: string[]
 }
 
 export interface WishlistItem {
@@ -141,6 +142,7 @@ export const defaultCustomization: GalleryCustomization = {
   itinerary: [],
   chatAiEnabled: false,
   pdfEnabled: false,
+  checklistDone: [],
 }
 
 export function themeColourById(id: string): ThemeColour {

@@ -29,6 +29,7 @@ const customizationSchema = z.object({
   itinerary: z.array(itineraryItemSchema).optional().default([]),
   chatAiEnabled: z.boolean().optional().default(false),
   pdfEnabled: z.boolean().optional().default(false),
+  checklistDone: z.array(z.string()).optional().default([]),
 })
 
 export async function PATCH(req: Request, context: { params: Promise<{ id: string }> }) {
