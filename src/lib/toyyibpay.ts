@@ -13,7 +13,7 @@ export function myrToSen(value: unknown): number | null {
 }
 
 function gatewayBase() {
-  const url = new URL(process.env.TOYYIBPAY_BASE_URL || 'https://dev.toyyibpay.com/index.php/api')
+  const url = new URL(process.env.TOYYIBPAY_BASE_URL || 'https://toyyibpay.com/index.php/api')
   if (url.protocol !== 'https:' || !['toyyibpay.com', 'dev.toyyibpay.com'].includes(url.hostname) || url.port || url.username || url.password) {
     throw new Error('Invalid ToyyibPay configuration')
   }

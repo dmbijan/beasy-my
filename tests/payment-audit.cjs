@@ -20,7 +20,7 @@ test('decimal amounts are exact and reject malformed values', () => {
   for (const value of ['', null, '159.001', '-159', '1e2', NaN]) assert.equal(gateway.myrToSen(value), null)
 })
 test('normalize bill array/object and derive trusted URL', () => {
-  assert.equal(gateway.normalizeBillResult([{ BillCode: 'abc', BillURL: 'https://evil.test' }]).billUrl, 'https://dev.toyyibpay.com/abc')
+  assert.equal(gateway.normalizeBillResult([{ BillCode: 'abc', BillURL: 'https://evil.test' }]).billUrl, 'https://toyyibpay.com/abc')
   assert.equal(gateway.normalizeBillResult({ bill_code: 'abc' }).billCode, 'abc')
   assert.throws(() => gateway.normalizeBillResult([]))
   assert.throws(() => gateway.normalizeBillResult({ BillCode: '../evil' }))

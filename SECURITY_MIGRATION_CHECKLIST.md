@@ -112,7 +112,7 @@ Supabase tidak ada built-in cron. Gunakan salah satu:
 |----------|-------------|------------|------------|
 | `AUTH_SECRET` | ✅ Ada | ✅ WAJIB | Jana: `openssl rand -base64 32` |
 | `NEXTAUTH_SECRET` | ✅ Ada | ✅ Boleh buang | NextAuth v5 guna AUTH_SECRET |
-| `TOYYIBPAY_BASE_URL` | `dev.toyyibpay.com` | `toyyibpay.com` | Tukar sebelum production |
+| `TOYYIBPAY_BASE_URL` | `dev.toyyibpay.com` | `toyyibpay.com` | ✅ Tukar default kod ke `toyyibpay.com` |
 | `GOOGLE_TOKENS_ENCRYPTION_KEY` | Dummy key | ✅ WAJIB real key | 32-byte hex: `openssl rand -hex 32` |
 | `NEXT_PUBLIC_URL` | `http://localhost:3000` | `https://beasy.my` | Untuk callback URLs |
 

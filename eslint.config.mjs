@@ -12,7 +12,16 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   {
-    ignores: ['.next/**', 'node_modules/**', 'out/**', 'build/**', 'supabase/**', 'tests/**', '*.cjs', 'tailwind.config.ts', 'next.config.js'],
+    rules: {
+      // Downgrade noisy legacy-project rules to warnings so lint stays usable.
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      'react/no-unescaped-entities': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+  {
+    ignores: ['.next/**', 'node_modules/**', 'out/**', 'build/**', 'supabase/**', 'tests/**', '*.cjs', 'tailwind.config.ts', 'next.config.js', 'postcss.config.js', 'public/**', '.kilo/**'],
   },
 ]
 

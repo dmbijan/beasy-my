@@ -105,8 +105,8 @@ export default function EventPortalPage() {
   ]
 
   const handleFABAction = (action: string) => {
-    const module = { photo: 'photoWall', audio: 'audioGuestbook', video: 'videoGuestbook', wishes: 'wishes', qr: 'rsvp' }[action]
-    if (!module || !eventData?.modules[module]) {
+    const moduleKey = { photo: 'photoWall', audio: 'audioGuestbook', video: 'videoGuestbook', wishes: 'wishes', qr: 'rsvp' }[action]
+    if (!moduleKey || !eventData?.modules[moduleKey]) {
       alert('Modul ini tidak diaktifkan oleh tuan rumah.')
       return
     }

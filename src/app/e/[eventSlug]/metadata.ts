@@ -9,7 +9,7 @@ export async function generateMetadata(eventSlug: string): Promise<Metadata> {
   try {
     const { data: event } = await supabaseAdmin
       .from('events')
-      .select('title, event_type, event_date, venue_name, venue_address, description, cover_image, theme_config')
+      .select('title, event_type, event_date, venue_name, venue_address, description, cover_image, theme_config, host_id, is_anonymous')
       .eq('slug', eventSlug)
       .single()
 
@@ -25,6 +25,11 @@ export async function generateMetadata(eventSlug: string): Promise<Metadata> {
     const imageUrl = event.cover_image || `${process.env.NEXT_PUBLIC_URL || 'http://localhost:3000'}/og-default.jpg`
     const eventDate = new Date(event.event_date).toISOString()
 
+    // Events without a host (anonymous/unclaimed) must not be indexed to
+    // prevent SEO phishing — anyone could claim a public URL otherwise.
+    const isUnclaimed = !event.host_id || event.is_anonymous === true
+    const robots = isUnclaimed ? 'noindex, nofollow' : 'index, follow'
+
     return {
       title,
       description,
@@ -32,7 +37,7 @@ export async function generateMetadata(eventSlug: string): Promise<Metadata> {
       authors: [{ name: 'Beasy.my' }],
       creator: 'Beasy.my',
       publisher: 'Beasy.my',
-      robots: 'index, follow',
+      robots,
       alternates: {
         canonical: `${process.env.NEXT_PUBLIC_URL || 'http://localhost:3000'}/e/${eventSlug}`,
       },

@@ -632,7 +632,7 @@ Flow:
 | 3 | signIn callback exists | 🟢 Low | ✅ FIXED | Profile creation works |
 | 4 | Signout route needed | 🟢 Low | ✅ FIXED | NextAuth v5 compatible |
 | 5 | Dual OAuth flows | 🟡 Medium | ✅ FIXED | Tokens server-side only |
-| 6 | Token refresh logic | 🟡 Medium | ⚠️ TODO | Not yet implemented |
+| 6 | Token refresh logic | 🟡 Medium | ✅ FIXED | oauth2Client.refresh_token in google-drive.ts |
 | 7 | Event claim vulnerability | 🔴 Critical | ✅ FIXED | claim_token required |
 | 8 | Token exposure in JWT | 🔴 Critical | ✅ FIXED | accessToken removed |
 | 9 | No rate limiting | 🟡 Medium | ✅ FIXED | 20-30 req/min per IP |
@@ -898,7 +898,9 @@ amount: PREMIUM_PRICE      // ✅ Always RM159
 // TODO: Verify hash matches signature
 // No actual verification!
 
-// AFTER (SECURE)
+// AFTER (SECURE) — verified via verifyAndSettle() in src/lib/payment-service.ts
+// which looks up the order by billCode, validates the amount in sen, and
+// settles atomically via the settle_payment RPC (fails closed on error).
 const expectedHash = createHash('sha256')
   .update(`${billCode}${amount}${type}${paymentId}${referenceId}${SECRET}`)
   .digest('hex')
@@ -1083,7 +1085,7 @@ NEXTAUTH_SECRET=<secret>
 # ToyyibPay
 TOYYIBPAY_SECRET_KEY=<key>
 TOYYIBPAY_CATEGORY_CODE=<code>
-TOYYIBPAY_BASE_URL=https://dev.toyyibpay.com/index.php/api
+TOYYIBPAY_BASE_URL=https://toyyibpay.com/index.php/api
 ```
 
 ---

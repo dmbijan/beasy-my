@@ -153,7 +153,7 @@ NEXTAUTH_SECRET=YOUR_NEXTAUTH_SECRET
 
 TOYYIBPAY_SECRET_KEY=YOUR_TOYYIBPAY_SECRET_KEY
 TOYYIBPAY_CATEGORY_CODE=rdhdemci
-TOYYIBPAY_BASE_URL=https://dev.toyyibpay.com/index.php/api
+TOYYIBPAY_BASE_URL=https://toyyibpay.com/index.php/api
 ```
 
 ---

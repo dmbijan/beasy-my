@@ -7,7 +7,7 @@ export async function generateMetadata({ params }: { params: Promise<{ eventSlug
   try {
     const { data: event } = await supabaseAdmin
       .from('events')
-      .select('title, event_type, event_date, venue_name, venue_address, description, cover_image')
+      .select('title, event_type, event_date, venue_name, venue_address, description, cover_image, host_id, is_anonymous')
       .eq('slug', eventSlug)
       .eq('is_active', true)
       .maybeSingle()
@@ -24,10 +24,15 @@ export async function generateMetadata({ params }: { params: Promise<{ eventSlug
     const description = event.description || `Sertai ${event.title} di ${event.venue_name || 'tempat menarik'}!`
     const imageUrl = event.cover_image || `${baseUrl}/og-default.jpg`
 
+    // Unclaimed (anonymous) events must not be indexed to prevent SEO phishing.
+    const isUnclaimed = !event.host_id || event.is_anonymous === true
+    const robots = isUnclaimed ? 'noindex, nofollow' : 'index, follow'
+
     return {
       title,
       description,
       keywords: [event.title, event.event_type, event.venue_name || '', 'beasy', 'event'],
+      robots,
       alternates: { canonical: `${baseUrl}/e/${eventSlug}` },
       category: event.event_type || 'event',
       openGraph: {
@@ -64,12 +69,13 @@ export default async function EventLayout({ children, params }: { children: Reac
   try {
     const { data: event } = await supabaseAdmin
       .from('events')
-      .select('title, event_type, event_date, venue_name, venue_address, description, cover_image')
+      .select('title, event_type, event_date, venue_name, venue_address, description, cover_image, host_id, is_anonymous')
       .eq('slug', eventSlug)
       .eq('is_active', true)
       .maybeSingle()
 
-    if (event) {
+    // Do not emit rich-result structured data for unclaimed events.
+    if (event && event.host_id && event.is_anonymous !== true) {
       const eventSchema = {
         '@context': 'https://schema.org',
         '@type': 'Event',
