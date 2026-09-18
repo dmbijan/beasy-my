@@ -81,7 +81,8 @@ export default function TemplatesPage() {
               transition={{ delay: index * 0.05 }}
               whileHover={{ y: -5, scale: 1.02 }}
             >
-              <GlassCard variant="light" glow="default" className="overflow-hidden group cursor-pointer">
+              <Link href={`/templates/${template.id}`} className="block">
+                <GlassCard variant="light" glow="default" className="overflow-hidden group cursor-pointer">
                 {/* Preview */}
                 <div className={`aspect-[4/3] bg-gradient-to-br ${template.gradient} relative flex items-center justify-center overflow-hidden`}>
                   <MotifOverlay kind={motifKindForCategory(template.category)} accent={template.accentColor2} />
@@ -113,6 +114,7 @@ export default function TemplatesPage() {
                   </div>
                 </div>
               </GlassCard>
+              </Link>
             </motion.div>
           ))}
         </div>
