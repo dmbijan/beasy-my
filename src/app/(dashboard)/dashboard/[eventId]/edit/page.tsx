@@ -10,6 +10,7 @@ import MediaModeration from '@/components/widgets/MediaModeration'
 import GalleryCustomization from '@/components/widgets/GalleryCustomization'
 import WeddingFeaturesWidget from '@/components/widgets/WeddingFeaturesWidget'
 import WeddingChecklistWidget from '@/components/widgets/WeddingChecklistWidget'
+import ModulesWidget from '@/components/widgets/ModulesWidget'
 import { Monitor } from 'lucide-react'
 
 interface EditableEvent { slug: string; title: string; event_date: string; venue_name: string; venue_address: string; description: string; is_active: boolean }
@@ -71,6 +72,7 @@ export default function EditEventPage() {
         </Link>
       </GlassCard>
       <MediaModeration eventId={eventId} />
+      <ModulesWidget eventId={eventId} />
       <GalleryCustomization eventId={eventId} />
       <WeddingFeaturesWidget eventId={eventId} />
       <WeddingChecklistWidget eventId={eventId} />

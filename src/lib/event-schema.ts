@@ -70,9 +70,14 @@ export function eventRow(data: z.infer<typeof eventSchema>) {
 }
 
 export function defaultEventModules(data: z.infer<typeof eventSchema>) {
+  // Free modules are enabled by default. Premium modules start disabled —
+  // the host must toggle them on after upgrading to Premium (enforced at API).
+  const freeModules = new Set(['rsvp', 'seating', 'menu'])
   return ['rsvp', 'seating', 'menu', 'photobooth', 'audio_guestbook', 'video_guestbook', 'wishes', 'song_request', 'live_wall', 'angpao'].map(module_type => ({
     module_type,
-    is_enabled: module_type === 'angpao' ? data.angpaoEnabled : ['rsvp', 'wishes', 'song_request', 'photobooth', 'audio_guestbook', 'video_guestbook'].includes(module_type),
+    is_enabled: module_type === 'angpao'
+      ? data.angpaoEnabled
+      : freeModules.has(module_type),
     settings: module_type === 'angpao' ? {
       bankName: data.bankName, accountNumber: data.accountNumber, accountName: data.accountName,
       duitNowNumber: data.duitNowNumber, duitNowName: data.duitNowName,

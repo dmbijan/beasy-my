@@ -352,6 +352,7 @@ export default function CreateEventPage() {
                             <li>☁️ Auto-save ke Google Drive</li>
                           </ul>
                           <p className="text-amber-300/60 text-xs mt-2">Bayar sekali sahaja — tidak perlu subscription!</p>
+                          <p className="text-amber-300/60 text-xs mt-1">Selepas publish, anda boleh pilih/toggle modul yang dikehendaki dalam Edit Acara.</p>
                         </div>
                       </div>
                     </div>

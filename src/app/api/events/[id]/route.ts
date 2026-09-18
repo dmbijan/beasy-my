@@ -29,10 +29,16 @@ export async function GET(_req: Request, context: { params: Promise<{ id: string
   if (!session?.user?.id) return Response.json({ error: 'Sila log masuk dahulu' }, { status: 401 })
   const { id } = await context.params
   if (!z.string().uuid().safeParse(id).success) return Response.json({ error: 'ID tidak sah' }, { status: 400 })
-  const { data, error } = await supabaseAdmin.from('events').select('id, slug, title, event_date, venue_name, venue_address, description, is_active, theme_config')
-    .eq('id', id).eq('host_id', session.user.id).single()
+  const { data, error } = await supabaseAdmin.from('events').select('id, slug, title, event_date, venue_name, venue_address, description, is_active, theme_config, event_modules(module_type, is_enabled, settings), host_id').eq('id', id).eq('host_id', session.user.id).single()
   if (error || !data) return Response.json({ error: 'Acara tidak dijumpai atau bukan milik anda' }, { status: 404 })
-  return Response.json({ event: data }, { headers: { 'Cache-Control': 'private, no-store' } })
+  // Determine premium status.
+  let isPremium = false
+  if (data.host_id) {
+    const { data: profile } = await supabaseAdmin.from('profiles').select('is_premium, premium_expires_at').eq('id', data.host_id).maybeSingle()
+    isPremium = profile?.is_premium === true && (profile.premium_expires_at == null || Date.parse(profile.premium_expires_at) > Date.now())
+  }
+  const { host_id: _host, ...rest } = data
+  return Response.json({ event: { ...rest, isPremium } }, { headers: { 'Cache-Control': 'private, no-store' } })
 }
 
 export async function PATCH(req: Request, context: { params: Promise<{ id: string }> }) {
