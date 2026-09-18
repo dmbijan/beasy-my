@@ -15,6 +15,9 @@ import AudioGuestbook from "@/components/widgets/AudioGuestbook"
 import VideoGuestbook from "@/components/widgets/VideoGuestbook"
 import Photobooth from "@/components/widgets/Photobooth"
 import QRScanner from "@/components/widgets/QRScanner"
+import Itinerary from "@/components/widgets/Itinerary"
+import Wishlist from "@/components/widgets/Wishlist"
+import ChatAI from "@/components/widgets/ChatAI"
 import { toEventView } from "@/lib/event-view"
 import { themePageGradient, accentWithAlpha } from "@/lib/theme-styles"
 import { motifKindForCategory, MotifOverlay } from "@/components/ui/TemplateMotif"
@@ -187,6 +190,13 @@ export default function EventPortalPage() {
         animate={{ opacity: 1, y: 0 }}
         className="relative px-4 pt-8 pb-6"
       >
+        {/* Video Cover (motion invite opening) */}
+        {eventData.customization?.videoCover && (
+          <div className="mb-6 overflow-hidden rounded-2xl border border-white/10">
+            <video src={eventData.customization.videoCover} autoPlay muted loop playsInline className="w-full aspect-video object-cover" />
+          </div>
+        )}
+
         <GlassCard variant="light" className="mb-6">
           <div className="text-center">
             <span
@@ -242,6 +252,16 @@ export default function EventPortalPage() {
 
             {eventData.customization?.welcomeMessage && (
               <p className="text-white/70 text-sm mt-3 max-w-md mx-auto">{eventData.customization.welcomeMessage}</p>
+            )}
+
+            {/* Download PDF */}
+            {eventData.customization?.pdfEnabled && (
+              <button
+                onClick={() => window.print()}
+                className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-white/80 text-sm hover:bg-white/20 transition"
+              >
+                <Download className="w-4 h-4" /> Muat Turun PDF
+              </button>
             )}
           </div>
         </GlassCard>
@@ -334,6 +354,12 @@ export default function EventPortalPage() {
                   </div>
                 </GlassCard>
               )}
+
+              {/* Aturcara Majlis */}
+              <Itinerary items={eventData.customization?.itinerary || []} />
+
+              {/* Wishlist Hadiah */}
+              <Wishlist items={eventData.customization?.wishlist || []} />
 
               {/* Menu */}
               {eventData.modules.menu && (
@@ -583,6 +609,24 @@ export default function EventPortalPage() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Background Music (autoplay muted, user can unmute) */}
+      {eventData.customization?.backgroundMusic && (
+        <audio src={eventData.customization.backgroundMusic} loop autoPlay muted controls className="fixed bottom-24 left-4 z-30 w-48 h-10 opacity-70" />
+      )}
+
+      {/* Chat AI (guest chatbot) */}
+      {eventData.customization?.chatAiEnabled && (
+        <ChatAI event={{
+          title: eventData.title,
+          eventDate: eventData.eventDate,
+          venueName: eventData.venueName,
+          venueAddress: eventData.venueAddress,
+          dressCode: eventData.dressCode,
+          description: eventData.description,
+          customization: eventData.customization,
+        }} />
+      )}
 
       {/* Floating Bottom Dock */}
       <LiquidGlassDock

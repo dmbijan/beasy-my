@@ -3,6 +3,14 @@ import { supabaseAdmin } from '@/lib/supabase'
 import { z } from 'zod'
 import { defaultCustomization } from '@/lib/gallery-customization'
 
+const wishlistItemSchema = z.object({
+  id: z.string(), name: z.string().trim().max(200).optional().default(''),
+  link: z.string().trim().max(2048).optional().default(''), reserved: z.boolean().optional().default(false),
+})
+const itineraryItemSchema = z.object({
+  id: z.string(), time: z.string().trim().max(50).optional().default(''),
+  title: z.string().trim().max(200).optional().default(''), description: z.string().trim().max(2000).optional().default(''),
+})
 const customizationSchema = z.object({
   groom: z.string().trim().max(120).optional().default(''),
   bride: z.string().trim().max(120).optional().default(''),
@@ -15,6 +23,12 @@ const customizationSchema = z.object({
   guestFontId: z.string().optional().default('dancing-script'),
   keepsakeBackground: z.string().max(3_000_000).optional().default(''),
   storyTemplateIds: z.array(z.string()).optional().default([]),
+  backgroundMusic: z.string().trim().max(2048).optional().default(''),
+  videoCover: z.string().trim().max(2048).optional().default(''),
+  wishlist: z.array(wishlistItemSchema).optional().default([]),
+  itinerary: z.array(itineraryItemSchema).optional().default([]),
+  chatAiEnabled: z.boolean().optional().default(false),
+  pdfEnabled: z.boolean().optional().default(false),
 })
 
 export async function PATCH(req: Request, context: { params: Promise<{ id: string }> }) {

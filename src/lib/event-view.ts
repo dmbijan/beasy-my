@@ -3,6 +3,7 @@ import { defaultCustomization, type GalleryCustomization } from './gallery-custo
 export interface PublicEvent {
   id: string; slug: string; title: string; event_type: string; event_date: string;
   venue_name?: string; venue_address?: string; maps_link?: string; plan?: string;
+  description?: string; dress_code?: string;
   is_anonymous?: boolean; isOwner?: boolean; canClaim?: boolean;
   accent_color?: string;
   theme_config?: { theme?: string; accent_color?: string; customization?: Partial<GalleryCustomization> };
@@ -20,6 +21,7 @@ export function toEventView(event: PublicEvent) {
   return {
     ...event, eventType: event.event_type, eventDate: new Date(event.event_date),
     venueName: event.venue_name || '', venueAddress: event.venue_address || '', mapsLink: event.maps_link,
+    description: event.description || '', dressCode: event.dress_code || '',
     theme, accentColor,
     customization,
     modules: {

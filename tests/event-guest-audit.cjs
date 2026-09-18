@@ -17,7 +17,7 @@ function load(file, mocks = {}) {
   return exports
 }
 const schema = load('src/lib/event-schema.ts', {
-  './gallery-customization': { defaultCustomization: { groom: '', bride: '', monogram: '', hashtag: '', welcomeMessage: '', guestLanguage: 'ms', guestLayout: 'polaroid-wall', themeColourId: 'blush', guestFontId: 'dancing-script', keepsakeBackground: '', storyTemplateIds: [] } },
+  './gallery-customization': { defaultCustomization: { groom: '', bride: '', monogram: '', hashtag: '', welcomeMessage: '', guestLanguage: 'ms', guestLayout: 'polaroid-wall', themeColourId: 'blush', guestFontId: 'dancing-script', keepsakeBackground: '', storyTemplateIds: [], backgroundMusic: '', videoCover: '', wishlist: [], itinerary: [], chatAiEnabled: false, pdfEnabled: false } },
 })
 const valid = { title: 'Majlis Ujian', slug: 'majlis-ujian', eventType: 'wedding', eventDate: '2027-01-01T10:00:00Z' }
 test('event schema rejects reserved slug, invalid dates and unsafe links', () => {
@@ -34,7 +34,7 @@ test('theme stored in schema-supported theme_config and free defaults consistent
 })
 test('public model maps location and safely defaults missing modules', () => {
   const { toEventView } = load('src/lib/event-view.ts', {
-    './gallery-customization': { defaultCustomization: { groom: '', bride: '', monogram: '', hashtag: '', welcomeMessage: '', guestLanguage: 'ms', guestLayout: 'polaroid-wall', themeColourId: 'blush', guestFontId: 'dancing-script', keepsakeBackground: '', storyTemplateIds: [] } },
+    './gallery-customization': { defaultCustomization: { groom: '', bride: '', monogram: '', hashtag: '', welcomeMessage: '', guestLanguage: 'ms', guestLayout: 'polaroid-wall', themeColourId: 'blush', guestFontId: 'dancing-script', keepsakeBackground: '', storyTemplateIds: [], backgroundMusic: '', videoCover: '', wishlist: [], itinerary: [], chatAiEnabled: false, pdfEnabled: false } },
   })
   const model = toEventView({ id: 'id', title: 'Event', event_date: valid.eventDate, venue_name: 'Dewan', venue_address: 'KL' })
   assert.equal(model.venueName, 'Dewan')

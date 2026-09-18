@@ -100,6 +100,27 @@ export interface GalleryCustomization {
   guestFontId: string
   keepsakeBackground: string
   storyTemplateIds: string[]
+  // ---- New wedding features (competitor-inspired) ----
+  backgroundMusic: string
+  videoCover: string
+  wishlist: WishlistItem[]
+  itinerary: ItineraryItem[]
+  chatAiEnabled: boolean
+  pdfEnabled: boolean
+}
+
+export interface WishlistItem {
+  id: string
+  name: string
+  link: string
+  reserved: boolean
+}
+
+export interface ItineraryItem {
+  id: string
+  time: string
+  title: string
+  description: string
 }
 
 export const defaultCustomization: GalleryCustomization = {
@@ -114,6 +135,12 @@ export const defaultCustomization: GalleryCustomization = {
   guestFontId: 'dancing-script',
   keepsakeBackground: '',
   storyTemplateIds: [],
+  backgroundMusic: '',
+  videoCover: '',
+  wishlist: [],
+  itinerary: [],
+  chatAiEnabled: false,
+  pdfEnabled: false,
 }
 
 export function themeColourById(id: string): ThemeColour {
