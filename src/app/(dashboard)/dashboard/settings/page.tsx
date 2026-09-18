@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
-import { useSession } from "next-auth/react"
+import { useSession, signOut } from "next-auth/react"
 import GlassCard from "@/components/ui/GlassCard"
 import { 
   Settings, 
@@ -132,15 +132,7 @@ export default function AccountSettingsPage() {
 
   async function handleSignOut() {
     if (confirm("Adakah anda pasti mahu log keluar?")) {
-      localStorage.removeItem("beasy_session")
-      // Clear NextAuth session via API
-      await fetch("/api/auth/signout", { 
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ callbackUrl: "/auth/signin" })
-      })
-      // Hard redirect to signin page
-      window.location.href = "/auth/signin"
+      await signOut({ callbackUrl: "/auth/signin" })
     }
   }
 
