@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { isAdmin } from '@/lib/admin'
 
-// Admin API — read-only overview + moderation. Protected by email allowlist
-// (ADMIN_EMAILS env var). Never returns sensitive keys/tokens.
+// Admin API — read-only overview + moderation + user creation. Protected by
+// email allowlist (ADMIN_EMAILS env var). Never returns sensitive keys/tokens.
 
 export async function GET(req: NextRequest) {
   if (!(await isAdmin())) {
@@ -68,5 +68,47 @@ export async function GET(req: NextRequest) {
   } catch (err) {
     console.error('Admin API error:', err)
     return NextResponse.json({ error: 'Gagal memuatkan data admin' }, { status: 500 })
+  }
+}
+
+// POST /api/admin — create a new user (admin only).
+export async function POST(req: NextRequest) {
+  if (!(await isAdmin())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+  }
+
+  try {
+    const body = await req.json().catch(() => null)
+    const email = typeof body?.email === 'string' ? body.email.trim().toLowerCase() : ''
+    const fullName = typeof body?.fullName === 'string' ? body.fullName.trim().slice(0, 255) : ''
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return NextResponse.json({ error: 'Emel tidak sah' }, { status: 400 })
+    }
+
+    const existing = await supabaseAdmin.from('profiles').select('id, email').eq('email', email).maybeSingle()
+    if (existing.data) {
+      return NextResponse.json({ error: 'User sudah wujud', existing: existing.data }, { status: 409 })
+    }
+
+    const { data, error } = await supabaseAdmin.auth.admin.createUser({
+      email,
+      email_confirm: true,
+      user_metadata: { full_name: fullName },
+    })
+    if (error || !data.user) {
+      return NextResponse.json({ error: error?.message || 'Gagal mencipta user' }, { status: 500 })
+    }
+
+    const { error: profileError } = await supabaseAdmin.from('profiles').upsert({
+      id: data.user.id, email, full_name: fullName, avatar_url: '',
+    }, { onConflict: 'id' })
+    if (profileError) {
+      return NextResponse.json({ error: 'User auth dibuat tetapi profil gagal: ' + profileError.message }, { status: 500 })
+    }
+
+    return NextResponse.json({ success: true, user: { id: data.user.id, email, full_name: fullName } }, { status: 201 })
+  } catch (err) {
+    console.error('Admin create user error:', err)
+    return NextResponse.json({ error: 'Gagal mencipta user' }, { status: 500 })
   }
 }

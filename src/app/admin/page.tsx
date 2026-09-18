@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react'
 import GlassCard from '@/components/ui/GlassCard'
 import {
   LayoutDashboard, Calendar, Users, CreditCard, Image as ImageIcon,
-  Loader2, ShieldCheck, ExternalLink, CheckCircle2, XCircle, Ban,
+  Loader2, ShieldCheck, ExternalLink, CheckCircle2, XCircle, Ban, UserPlus,
 } from 'lucide-react'
 
 type Section = 'overview' | 'events' | 'users' | 'payments' | 'media'
@@ -22,6 +22,10 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [forbidden, setForbidden] = useState(false)
+  const [newEmail, setNewEmail] = useState('')
+  const [newName, setNewName] = useState('')
+  const [creating, setCreating] = useState(false)
+  const [createMsg, setCreateMsg] = useState('')
 
   useEffect(() => {
     if (status === 'loading') return
@@ -74,6 +78,26 @@ export default function AdminPage() {
 
   const fmt = (s?: string) => s ? new Date(s).toLocaleString('ms-MY') : '—'
 
+  const createUser = async () => {
+    setCreating(true); setCreateMsg('')
+    try {
+      const response = await fetch('/api/admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newEmail, fullName: newName }),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error)
+      setCreateMsg(`✅ User ${data.user.email} berjaya didaftarkan.`)
+      setNewEmail(''); setNewName('')
+      setSection('users')
+    } catch (err) {
+      setCreateMsg(`❌ ${err instanceof Error ? err.message : 'Gagal daftar'}`)
+    } finally {
+      setCreating(false)
+    }
+  }
+
   return (
     <main className="min-h-screen mesh-gradient px-4 py-8 pb-16 max-w-6xl mx-auto space-y-6">
       <header className="flex flex-wrap items-center justify-between gap-4">
@@ -100,6 +124,35 @@ export default function AdminPage() {
           </button>
         ))}
       </nav>
+
+      {/* Daftar User Baru */}
+      <GlassCard variant="light" className="space-y-3">
+        <h2 className="text-white font-semibold flex items-center gap-2"><UserPlus className="w-5 h-5 text-emerald-400" /> Daftar User Baru</h2>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <input
+            value={newEmail}
+            onChange={e => setNewEmail(e.target.value)}
+            placeholder="emel@contoh.com"
+            type="email"
+            className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm placeholder-white/30 focus:outline-none focus:border-emerald-500/50"
+          />
+          <input
+            value={newName}
+            onChange={e => setNewName(e.target.value)}
+            placeholder="Nama penuh (opsional)"
+            className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white text-sm placeholder-white/30 focus:outline-none focus:border-emerald-500/50"
+          />
+          <button
+            onClick={createUser}
+            disabled={creating || !newEmail}
+            className="px-5 py-2.5 rounded-xl bg-emerald-500 text-white font-semibold hover:bg-emerald-600 transition disabled:opacity-50 flex items-center gap-2"
+          >
+            {creating ? <Loader2 className="w-4 h-4 animate-spin" /> : <UserPlus className="w-4 h-4" />}
+            Daftar
+          </button>
+        </div>
+        {createMsg && <p className="text-sm text-white/80">{createMsg}</p>}
+      </GlassCard>
 
       {error && <p role="alert" className="text-rose-300 text-sm">{error}</p>}
       {loading && <div className="flex items-center gap-2 text-white/60 text-sm"><Loader2 className="w-4 h-4 animate-spin" /> Memuatkan...</div>}
