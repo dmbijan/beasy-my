@@ -328,6 +328,7 @@ export default function CreateEventPage() {
                           <ul className="text-xs text-emerald-200/70 space-y-1">
                             <li>✅ Cipta & publish acara</li>
                             <li>✅ RSVP & guest management</li>
+                            <li>✅ Senarai Menu & Pengaturan Meja</li>
                             <li>✅ Custom theme & cover image</li>
                             <li>✅ Social media links</li>
                           </ul>
@@ -353,6 +354,26 @@ export default function CreateEventPage() {
                           </ul>
                           <p className="text-amber-300/60 text-xs mt-2">Bayar sekali sahaja — tidak perlu subscription!</p>
                           <p className="text-amber-300/60 text-xs mt-1">Selepas publish, anda boleh pilih/toggle modul yang dikehendaki dalam Edit Acara.</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Premium Dashboard Tools (ciri eksklusif dashboard) */}
+                    <div className="p-4 rounded-xl bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border border-purple-500/20">
+                      <div className="flex items-start gap-3">
+                        <Sparkles className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-purple-300 font-semibold text-sm mb-1">💎 Ciri Eksklusif Dashboard Premium:</p>
+                          <ul className="text-xs text-purple-200/70 space-y-1">
+                            <li>🖨️ QR Boleh Cetak — Print QR statik untuk kad meja / papan</li>
+                            <li>📺 Paparan Dewan Langsung — Tayang Live Wall di TV/projektor</li>
+                            <li>🛡️ Moderasi Media — Lulus/sekat foto & video sebelum paparan</li>
+                            <li>🎨 Customization Galeri — Tema, font, frame cerita, couple identity</li>
+                            <li>✨ Ciri Majlis Tambahan — Wishlist, aturcara, lagu, video cover, PDF, Chat AI</li>
+                            <li>✅ Senarai Semak Kahwin — 33 item SPPIM + 13 kategori</li>
+                            <li>☁️ Google Drive Integration — Auto-save & Sheets export</li>
+                          </ul>
+                          <p className="text-purple-300/60 text-xs mt-2">Semua perkakasan ini muncul di halaman Edit Acara selepas upgrade.</p>
                         </div>
                       </div>
                     </div>
